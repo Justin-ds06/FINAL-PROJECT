@@ -1,58 +1,28 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['username'])) {
-    header("Location: index.php");
-    exit();
-}
-
-$username = $_SESSION['username'];
-?>
-
+<?php session_start(); ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css?v=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calacal — Home</title>
+    <link rel="stylesheet" href="css\index.css">
 </head>
 <body>
-
-<div class="navbar">
-    <div class="menu">
-        <a class="active" href="dashboard.php">Dashboard</a>
-        <a href="products.php">Products</a>
-        <a href="users.php">Users</a>
-        <a href="posts.php">Posts</a>
-    </div>
-
-    <div>
-        <a href="logout.php" class="logout">Logout</a>
-    </div>
-</div>
-
-<div class="welcome">
-    Welcome, <strong><?php echo $username; ?></strong>
-</div>
-
 <div class="container">
 
-    <div class="card">
-        <a class="btn" href="products.php">View Products</a>
-    </div>
+    <div class="form-box">
+        <a href="index.php" class="home-text">
+            <img src="img\logo.png" alt="Calacal Logo">
+        </a>
+        <h2>Welcome to Calacal!</h2>
+        <h3>Find joy in every cart.</h3>
+        <a href="login.php"><button>Login</button></a>
+        <p>
+            Don't have an account? <a href="register.php" onclick="showForm('register-form')">Register</a>        
+        </p>
 
-    <div class="card">
-        <a class="btn" href="users.php">View Users</a>
     </div>
-
-    <div class="card">
-        <a class="btn" href="carts.php">View Carts</a>
-    </div>
-
-    <div class="card">
-        <a class="btn" href="posts.php">View Posts</a>
-    </div>
-
 </div>
-
 </body>
+
 </html>
