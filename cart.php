@@ -1,25 +1,10 @@
 <?php
-$userId = isset($_GET['user_id']) ? intval($_GET['user_id']) : null;
+$cartResponse = @file_get_contents("https://dummyjson.com/carts");
+$cartData = json_decode($cartResponse, true);
 
-if (!$userId) {
-    die("No user selected");
-}
-
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://dummyjson.com/carts");
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-$response = curl_exec($ch);
-curl_close($ch);
-
-$data = json_decode($response, true);
-
-if (!isset($data['carts'])) {
-    die("Invalid API response");
-}
+if (isset($cartData['carts'])) {
+    foreach ($cartData['carts'] as $cart) {
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,32 +23,26 @@ if (!isset($data['carts'])) {
 </div>
 
 <div class="cart-box">
+    <h3>Cart ID: <?php echo $cart['id']; ?></h3>
+    User ID: <?php echo $cart['userId']; ?><br>
+    Total Products: <?php echo $cart['totalProducts']; ?><br>
+    Total Amount: $<?php echo $cart['total']; ?><br><br>
 
-<?php foreach ($data['carts'] as $cart): ?>
+    <strong>Products:</strong><br><br>
 
-    <div class="cart-item-block">
-
-        <h3>Cart ID: <?php echo $cart['id']; ?></h3>
-        <p>User ID: <?php echo $cart['userId']; ?></p>
-        <p>Total Products: <?php echo $cart['totalProducts']; ?></p>
-        <p>Total: $<?php echo $cart['total']; ?></p>
-
-        <strong>Products:</strong><br><br>
-
-        <?php foreach ($cart['products'] as $product): ?>
-            <div class="cart-item">
-                <?php echo htmlspecialchars($product['title']); ?>
-                | Qty: <?php echo $product['quantity']; ?>
-                | Price: $<?php echo $product['price']; ?>
-            </div>
-        <?php endforeach; ?>
-
-        <hr>
-
-    </div>
-
-<?php endforeach; ?>
-
+    <?php foreach ($cart['products'] as $product): ?>
+        <div class="cart-item">
+            <?php echo htmlspecialchars($product['title']); ?>
+            | Qty: <?php echo $product['quantity']; ?>
+            | Price: $<?php echo $product['price']; ?>
+            | Total: $<?php echo $product['total']; ?>
+        </div>
+    <?php endforeach; ?>
 </div>
+
+<?php
+    }
+}
+?>
 </body>
 </html>
